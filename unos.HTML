@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prodaja Cvijeća</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://www.paypal.com/sdk/js?client-id=Afzc1IlgRQANkX3NGrGcsvTxA5EtNwUQZeLbuicoNCM-hZxx13uq2LyJESOmeue6FLZJELnCp4xTOoXn"></script>
+    
+<!-- Dodajte Firebase SDK skriptu -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+
+
+    <script src="index.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
+        
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyCv6gXZoMcNHrrliiuCj3_VNa3LvwQpMBk",
+          authDomain: "robot-8a67c.firebaseapp.com",
+          databaseURL: "https://robot-8a67c-default-rtdb.europe-west1.firebasedatabase.app",
+          projectId: "robot-8a67c",
+          storageBucket: "robot-8a67c.appspot.com",
+          messagingSenderId: "365327503389",
+          appId: "1:365327503389:web:2f367dc92741cb6927b6f4",
+          measurementId: "G-MTXV2PV4RH"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = firebase.firestore();
+      </script>
+
+</head>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .header {
+       
+        position: relative;
+        z-index: 1;
+       
+        background-size: cover;
+    }
+
+    .text-animation {
+        min-height: 300px; /* Visina text-animation sekcije */
+        position: relative;
+      
+    }
+
+    .full-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 80%;
+        z-index: 0;
+        
+        background-size: cover;
+        
+       
+    }
+
+
+/* Media upit za mobilne uređaje */
+@media only screen and (max-width: 768px) {
+   
+
+    .full-background {
+  
+        background-size: cover;
+        height: 115%;
+       
+    }
+}
+</style>
+
+
+<body>
+      <div class="full-background"></div>
+      <header class="header">
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt="Logo Cvijećara"></a>
+        </div>
+        <div class="search-box">
+            <div class="search-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <input type="text" placeholder="Pretraži">
+        </div>
+        <div class="menu-toggle">
+            <div class="menu-line"></div>
+            <div class="menu-line"></div>
+            <div class="menu-line"></div>
+        </div>
+    
+        <nav class="menu">
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="buketi.html">AKCIJA</a></li>
+                <li><a href="galerija.html">GALERIJA</a></li>
+                <li><a href="contact.html">KONTAKT</a></li>
+                <li><a href="about.html">O NAMA</a></li>
+                <li><a href="korpa.html">KORPA <i class="fas fa-shopping-cart"></i></a></li>
+    
+                <!-- Dodajte ostale opcije menija ovdje -->
+            </ul>
+        </nav>
+    </header>
+    
+    <script>
+        // Funkcija za pretraživanje voća i preusmjeravanje na odgovarajući proizvod
+        function searchFruit() {
+            // Dobivanje unosa korisnika iz polja za pretraživanje
+            var searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    
+            // Provjera da li se pojam nalazi u HTML elementima sa klasom 'product-nox'
+            var products = document.getElementsByClassName('product-nox');
+            for (var i = 0; i < products.length; i++) {
+                var productName = products[i].getElementsByTagName('h3')[0].innerText.toLowerCase();
+                if (productName.includes(searchTerm)) {
+                    // Ako pronađemo proizvod, preusmjeravamo korisnika na odgovarajući dio stranice
+                    window.location.href = '#' + products[i].id;
+                    return;
+                }
+            }
+    
+            // Ako proizvod nije pronađen, obavijestite korisnika
+            alert('Proizvod nije pronađen.');
+        }
+    
+        // Dodajemo slušača događaja za tipku Enter u polju za pretraživanje
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                searchFruit();
+            }
+        });
+    </script>
+    
+
+    
+
+
+<div class="text-animation" style="text-align: center; ">
+      
+    <form id="forma-unos-proizvoda">
+        <label for="naziv">Naziv:</label>
+        <input type="text" id="naziv" name="naziv" required><br><br>
+    
+        <label for="cijena">Cijena:</label>
+        <input type="number" id="cijena" name="cijena" required><br><br>
+    
+        <label for="slika">Slika:</label>
+        <input type="file" id="slika" name="slika"><br><br>
+    
+        <label for="stranica">Stranica:</label>
+        <select id="stranica" name="stranica">
+            <option value="voce.html">Voće</option>
+            <option value="povrce.html">Povrće</option>
+            <option value="meso.html">Meso</option>
+            <option value="slatkisi.html">Slatkiši</option>
+            <!-- Dodajte ostale opcije stranica ovdje -->
+        </select><br><br>
+    
+        <input type="checkbox" id="akcija" name="akcija">
+        <label for="akcija">Proizvod na akciji</label><br><br>
+    
+        <button type="button" onclick="dodajProizvod()">Dodaj</button>
+    </form>
+    
+
+    
+    
+
+    <script>
+        // Dodajemo funkciju za dodavanje proizvoda u Firestore
+        async function dodajProizvod() {
+            const naziv = document.getElementById('naziv').value;
+            const cijena = document.getElementById('cijena').value;
+            const slika = document.getElementById('slika').files[0]; // Prva odabrana slika
+            const stranica = document.getElementById('stranica').value;
+            const akcija = document.getElementById('akcija').checked; // Provjeri je li označeno polje za provjeru "Akcija"
+    
+            try {
+                // Dohvaćamo Firebase app iz globalnog objekta window
+                const app = window.firebase.app();
+                // Dohvaćamo Firestore instancu
+                const db = app.firestore();
+    
+                // Dodajemo novi dokument u kolekciju 'proizvodi'
+                await db.collection('proizvodi').add({
+                    naziv: naziv,
+                    cijena: parseFloat(cijena), // Pretvaramo cijenu u broj
+                    slika: slika.name, // Koristimo samo ime slike za sada
+                    stranica: stranica,
+                    akcija: akcija // Dodaj informaciju o akciji u objekt proizvoda
+                });
+    
+                alert('Proizvod uspješno dodan!');
+                window.location.href = stranica; // Preusmjeri na odabranu stranicu
+            } catch (error) {
+                console.error('Greška prilikom dodavanja proizvoda:', error);
+                alert('Došlo je do greške prilikom dodavanja proizvoda.');
+            }
+        }
+    </script>
+    
+    
+    
+    
+    
+    
+</div>
+</div>
+    
+
+
+
+<style>
+    @media only screen and (max-width: 768px) {
+        /* Stilovi za mobilne uređaje */
+        .text-animation div {
+            margin-right: -850px; /* Prilagodite margine prema potrebi */
+        }
+
+        .text-animation p {
+            margin-right: -30px; /* Prilagodite margine prema potrebi */
+            margin-top: 10px !important;
+            font-size: 22px !important; /* Dodajte !important kako biste osigurali primjenu veličine fonta */
+        }
+
+        .text-animation hr {
+            margin-right: 960px !important; /* Prilagodite margine prema potrebi */
+        }
+
+        /* Prilagodba za "ANNIVERSARY" - Smanji veličinu fonta */
+        .text-animation p:nth-child(2) {
+            font-size: 16px !important; /* Smanjite veličinu fonta prema potrebi */
+        }
+
+        /* Prilagodba za "200 YEARS" - Povećaj veličinu fonta */
+        .text-animation p:nth-child(4) {
+            font-size: 40px !important; /* Povećajte veličinu fonta prema potrebi */
+        }
+
+        /* Prilagodba za "From a little grocery shop..." - Smanji veličinu fonta */
+        .text-animation p:nth-last-child(3) {
+            font-size: 18px !important; /* Smanjite veličinu fonta prema potrebi */
+        }
+
+        /* Prilagodba za "Previous last paragraph" - Povećaj veličinu fonta */
+        .text-animation p:nth-last-child(2) {
+            font-size: 14px !important; /* Povećajte veličinu fonta prema potrebi */
+        }
+
+        /* Prilagodba za "See how you can join in the celebrations." - Smanji veličinu fonta */
+        .text-animation p:last-child {
+            font-size: 16px !important; /* Smanjite veličinu fonta prema potrebi */
+        }
+    }
+</style>
+
+
+
+
+</script>
+
+
+   
+    
+    <hr style="border: 1px solid rgb(212, 212, 212); width: 80%;">
+
+
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
+    
+    
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    
+
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="social-icons">
+                <a href="https://www.facebook.com/nerina.ba/"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-viber"></i></a>
+                <a href="https://www.instagram.com/cvjecaranerina/?hl=en"><i class="fab fa-instagram"></i></a>
+              </div>
+              
+            <div class="copyright">
+                &copy; 2023. Sva prava zadržana.
+            </div>
+        </div>
+    </footer>
+    
+
+
+
+</body>
+</html>
