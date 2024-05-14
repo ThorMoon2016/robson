@@ -16,13 +16,16 @@
 
     <script src="index.js"></script>
     
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+   
 
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
-        
+        // Inicijalizacija Firebase Firestore-a
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const db = getFirestore(app);  // 'app' je vaša već inicijalizirana Firebase aplikacija
+
         // TODO: Add SDKs for Firebase products that you want to use
         // https://firebase.google.com/docs/web/setup#available-libraries
       
@@ -42,7 +45,6 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
-        const db = firebase.firestore();
       </script>
 
 </head>
@@ -193,37 +195,40 @@
     
 
     <script>
-        // Dodajemo funkciju za dodavanje proizvoda u Firestore
-        async function dodajProizvod() {
-            const naziv = document.getElementById('naziv').value;
-            const cijena = document.getElementById('cijena').value;
-            const slika = document.getElementById('slika').files[0]; // Prva odabrana slika
-            const stranica = document.getElementById('stranica').value;
-            const akcija = document.getElementById('akcija').checked; // Provjeri je li označeno polje za provjeru "Akcija"
-    
-            try {
-                // Dohvaćamo Firebase app iz globalnog objekta window
-                const app = window.firebase.app();
-                // Dohvaćamo Firestore instancu
-                const db = app.firestore();
-    
-                // Dodajemo novi dokument u kolekciju 'proizvodi'
-                await db.collection('proizvodi').add({
-                    naziv: naziv,
-                    cijena: parseFloat(cijena), // Pretvaramo cijenu u broj
-                    slika: slika.name, // Koristimo samo ime slike za sada
-                    stranica: stranica,
-                    akcija: akcija // Dodaj informaciju o akciji u objekt proizvoda
-                });
-    
-                alert('Proizvod uspješno dodan!');
-                window.location.href = stranica; // Preusmjeri na odabranu stranicu
-            } catch (error) {
-                console.error('Greška prilikom dodavanja proizvoda:', error);
-                alert('Došlo je do greške prilikom dodavanja proizvoda.');
-            }
+     async function dodajProizvod() {
+    const naziv = document.getElementById('naziv').value;
+    const cijena = document.getElementById('cijena').value;
+    const slika = document.getElementById('slika').files[0];
+    const stranica = document.getElementById('stranica').value;
+    const akcija = document.getElementById('akcija').checked;
+
+    try {
+        // Provjeravamo postojanje objekta db
+        if (!db) {
+            throw new Error('Firestore nije pravilno inicijaliziran.');
         }
+
+        // Dodajemo novi dokument u kolekciju 'proizvodi'
+        await db.collection('proizvodi').add({
+            naziv: naziv,
+            cijena: parseFloat(cijena),
+            slika: slika.name,
+            stranica: stranica,
+            akcija: akcija
+        });
+
+        alert('Proizvod uspješno dodan!');
+        window.location.href = stranica; // Preusmjeri na odabranu stranicu
+    } catch (error) {
+        console.error('Greška prilikom dodavanja proizvoda:', error);
+        alert('Došlo je do greške prilikom dodavanja proizvoda.');
+    }
+}
+
+
     </script>
+
+
     
     
     
